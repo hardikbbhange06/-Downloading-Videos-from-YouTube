@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <style>
+        /* * {
+            background-color: black;
+        } */
+
+        #card {
+    background-color: antiquewhite;
+    height: 442px;
+    width: 483px;
+    border-radius: 50px;
+    margin-left: 689px;
+    margin-top: 158px;
+}
+
+        #h {
+            padding-top: 15px;
+        }
+
+        #container {
+            margin-left: 55px;
+            margin-top: 5px;
+
+        }
+
+        #videoUrl {
+            padding-top: 40px;
+        }
+
+        #url {
+            width: 330px;
+            height: 32px;
+        }
+
+        #videoOptions {
+            padding-top: 40px;
+        }
+
+        #downloadButton {
+            padding-top: 40px;
+        }
+
+        #btn {
+            width: 330px;
+            height: 32px;
+            margin-left: 10px;
+            border-radius: 15px;
+        }
+
+        #downloadProgress {
+            padding-top: 40px;
+
+        }
+
+        #downloadProgress1 {
+            width: 397px;
+            padding-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="card">
+
+        <form action="" id="f">
+
+            <div id="container">
+                <div id="h">
+                    <h1>YouTube Video Downloader</h1>
+                </div>
+
+                <!-- <p>Download videos from YouTube with a few clicks!</p> -->
+                <div id="videoUrl">
+                    <label for="url">URL:</label>
+                    <input type="text" id="url" placeholder="Enter YouTube Video URL">
+                </div>
+                <div id="videoOptions">
+                    <label for="format">Format:</label>
+                    <select id="format">
+                        <option value="mp4">MP4</option>
+                        <option value="flv">FLV</option>
+                        <option value="webm">WEBM</option>
+                    </select>
+                    <label for="resolution">Resolution:</label>
+                    <select id="resolution">
+                        <option value="720p">720p</option>
+                        <option value="480p">480p</option>
+                        <option value="360p">360p</option>
+                    </select>
+                </div>
+                <div id="downloadButton">
+                    <button id="btn">Download</button>
+                </div>
+                <div id="downloadProgress">
+                    <progress id="downloadProgress1" value="0" max="100">0%</progress>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+
+<script>
+    // Listen for download button click
+    $('#downloadButton button').click(function () {
+        // Get URL and format from user input
+        var url = $('#url').val();
+        var format = $('#format').val();
+        var resolution = $('#resolution').val();
+
+        // Validate input
+        if (url === '' || format === '' || resolution === '') {
+            alert('Please fill out all fields before downloading.');
+            return;
+        }
+
+        else {
+            alert(' downloading.');
+            return;
+        }
+
+        // Start download
+        chrome.runtime.sendMessage({
+            action: 'download',
+            url: url,
+            format: format,
+            resolution: resolution
+        });
+    });
+
+    // Listen for download progress
+    chrome.runtime.onMessage.addListener(function (message) {
+        if (message.action === 'updateProgress') {
+            $('#downloadProgress progress').attr('value', message.progress);
+        }
+    });
+
+</script>
+
+</html>
